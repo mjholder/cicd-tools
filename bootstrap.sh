@@ -30,6 +30,7 @@ export BONFIRE_ROOT=${TMP_JOB_DIR}/.bonfire
 export CICD_ROOT=${BONFIRE_ROOT}
 
 if [[ -z "$IMAGE_TAG" ]]; then
+    echo "top | ${IMAGE_TAG}"
     export IMAGE_TAG=$(git rev-parse --short=7 HEAD)
 fi
 
@@ -59,10 +60,12 @@ set +x
 
 # if this is a PR, use a different tag, since PR tags expire
 if [ -n "$ghprbPullId" ]; then
+  echo "github | ${IMAGE_TAG} | ${ghprbPullId}"
   export IMAGE_TAG="pr-${ghprbPullId}-${IMAGE_TAG}"
 fi
 
 if [ -n "$gitlabMergeRequestIid" ]; then
+  echo "gitlab | ${IMAGE_TAG} | ${gitlabMergeRequestIid}"
   export IMAGE_TAG="pr-${gitlabMergeRequestIid}-${IMAGE_TAG}"
 fi
 
